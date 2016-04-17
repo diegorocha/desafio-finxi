@@ -1,3 +1,38 @@
+# coding: utf-8
 from django.db import models
+from .choices import UF
+from unipath import Path
+from uuid import uuid4
 
-# Create your models here.
+def imovel_foto_path(instance, filename):
+	return 'imovel/{}{}'.format(uuid4(), Path(filename).ext)
+
+class Imovel(models.Model):
+
+	descricao = models.TextField(blank=False, help_text="Insira aqui a descrição do imóvel")
+	foto = models.ImageField(blank=False, upload_to=imovel_foto_path)
+	endereco = models.CharField(blank=False, max_length=100, help_text="Exemplo: Rua Baronesa, 175, Rio de Janeiro")
+	cep = models.CharField(blank=False, max_length=8)
+	uf = models.CharField(blank=False, max_length=2, null=True, choices=UF)
+	longitude = models.FloatField(editable=False)
+	latitude = models.FloatField(editable=False)
+	quartos = models.PositiveSmallIntegerField(help_text="Numero de quartos do imóvel", default=1)
+	suites = models.PositiveSmallIntegerField(help_text="Numero de quartos que são suite", default=0)
+	area = models.PositiveSmallIntegerField(help_text="Área em m²")
+	vagas = models.PositiveSmallIntegerField(help_text="Quantas Vagas na garagem?", default=0)
+	aluguel = models.DecimalField(blank=False, max_digits=8, decimal_places=2)
+	condominio = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+	iptu = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+	telefone = models.CharField(blank=False, max_length=11)
+	email = models.EmailField(blank=False, help_text="E-mail de contato")
+	disponivel = models.BooleanField(default=True, help_text="Desmarque se o imóvel não estiver mais disponível")
+	incluido = models.DateTimeField(auto_now_add=True, editable=False)
+	alterado = models.DateTimeField(auto_now=True, editable=False)
+
+	class Meta:
+		ordering = ('-incluido',)
+		verbose_name = 'Imóvel'
+		verbose_name_plural = 'Imóveis'
+
+	def __str__(self):
+		return 'Imóvel em {}'.format(self.endereco)
