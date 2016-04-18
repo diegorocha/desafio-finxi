@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{imovel.endereco_formatado}}</h1>
+    <div class="row">
+    	<p>{{imovel.descricao}}</p>
+    	<p><span class="titulo">Quartos: </span>{{imovel.quartos}}</p>
+    	<p><span class="titulo">Suítes: </span>{{imovel.suites}}</p>
+    	<p><span class="titulo">Área: </span>{{imovel.area}}</p>
+    	<p><span class="titulo">Vagas: </span>{{imovel.vagas}}</p>
+    	<p><span class="titulo">Aluguel: </span>R$ {{imovel.aluguel}}</p>
+    	<p><span class="titulo">Condomínio: </span>R$ {{imovel.condominio}}</p>
+    	<p><span class="titulo">IPTU: </span>R$ {{imovel.iptu}}</p>
+    	<p><span class="titulo">Telefone: </span>{{imovel.telefone}}</p>
+    	<p><span class="titulo">E-mail: </span>{{imovel.email}}</p>
+    	<p><span class="titulo">Incluído em : </span>{{imovel.incluido}}</p>
+    	<img class='foto-imovel-detalhe' src='{{imovel.foto.url}}' alt='{{imovel.descricao}}' title='{{imovel.descricao}}'>
+    </div>
+
+{% endblock content %}

@@ -5,5 +5,6 @@ from . import views
 urlpatterns = patterns(
     'imoveis.views',
     url(r'^$', 'home', name='home'),
-    url(r'^imovel/novo/$', views.imovel_novo, name='imovel_novo'),
+    url(r'^imovel/([0-9]+)/$', views.imovel_detalhe, name='detalhe'),
+    url(r'^imovel/novo/$', views.imovel_novo, name='novo'),
 )

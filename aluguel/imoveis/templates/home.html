@@ -1,7 +1,24 @@
 {% extends 'base.html' %}
 
-{% load staticfiles%}
-
 {% block content %}
         <h1>Imóveis</h1>
+        <div class="row">
+            {% for imovel in imoveis %}
+            <div class="row imovel">
+            	<a href='{% url 'imoveis:detalhe' imovel.id %}'>
+		            <div class="col-md-2 item-catalogo">
+		            	<img class='foto-imovel' src='{{imovel.foto.url}}' alt='{{imovel.descricao}}' title='{{imovel.descricao}}'>
+		            </div>
+		            <div class="col-md-10">
+		            	<p class="titulo">{{imovel.endereco_formatado}}</p>
+		            	<p><span class="titulo">Descricão: </span>{{imovel.descricao}}</p>
+		            	<p><span class="titulo">Quartos: </span>{{imovel.quartos}}</p>
+		            	<p><span class="titulo">Aluguel: </span>R$ {{imovel.aluguel}} + <span class="titulo">Condomínio: </span>R$ {{imovel.condominio}} + <span class="titulo">IPTU: </span>R$ {{imovel.iptu}}</p>
+		            </div>
+	            </a>
+            </div>
+            {% empty %}
+            <p align="center">Nenhum imóvel disponível.</p>
+            {% endfor %}
+        </div>
 {% endblock content %}

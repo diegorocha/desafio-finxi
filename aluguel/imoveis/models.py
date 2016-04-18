@@ -43,6 +43,11 @@ class Imovel(models.Model):
                 self.endereco_formatado = coordenadas[2]
         super(Imovel, self).save(*args, **kwargs)
 
+    @classmethod
+    def get_disponiveis(cls_obj):
+        return Imovel.objects.filter(disponivel=True)
+
+
     class Meta:
         ordering = ('-incluido',)
         verbose_name = 'Imóvel'
