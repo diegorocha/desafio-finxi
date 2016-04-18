@@ -1,5 +1,5 @@
 # coding: utf-8
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Imovel
 from .forms import ImovelForm
 
@@ -21,4 +21,16 @@ def imovel_novo(request):
             post.save()
     else:
         form = ImovelForm()
-    return render(request, 'novo.html', {'form': form})
+    return render(request, 'editar.html', {'form': form})
+
+def imovel_editar(request, imovel_id):
+    imovel = get_object_or_404(Imovel, pk=imovel_id)
+    if request.method == "POST":
+        form = ImovelForm(request.POST, instance=imovel)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('detalhe', post.id)
+    else:
+        form = ImovelForm(instance=imovel)
+    return render(request, 'editar.html', {'form': form})

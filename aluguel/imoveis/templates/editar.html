@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <h1>Novo Imóvel</h1>
+        <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-success">Guardar</button>
+    	</form>
+    	
+    	<form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+    	{% if form.instance.id %}
+        <button type="submit" class="save btn btn-danger">Remover Anúncio</button>
+        {% endif %}
+        </form>
+
+{% endblock content %}

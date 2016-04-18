@@ -32,6 +32,10 @@ class Imovel(models.Model):
     incluido = models.DateTimeField(auto_now_add=True, editable=False)
     alterado = models.DateTimeField(auto_now=True, editable=False)
 
+    @classmethod
+    def get_disponiveis(cls_obj):
+        return Imovel.objects.filter(disponivel=True)
+
     def save(self, *args, **kwargs):
         #Se um dos dois nao tiver preenchido
         if not (self.latitude and self.longitude):
@@ -43,9 +47,9 @@ class Imovel(models.Model):
                 self.endereco_formatado = coordenadas[2]
         super(Imovel, self).save(*args, **kwargs)
 
-    @classmethod
-    def get_disponiveis(cls_obj):
-        return Imovel.objects.filter(disponivel=True)
+    def remover_anuncio(self):
+        self.disponivel = False
+        self.save()
 
 
     class Meta:

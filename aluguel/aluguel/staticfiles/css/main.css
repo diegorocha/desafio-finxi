@@ -1,6 +1,3 @@
-h1,h2,h3,h4,h5,h6,p{
-    color: grey;
-}
 .post-form input, .post-form label, .post-form span {
     display:block;
 }
@@ -18,4 +15,7 @@ h1,h2,h3,h4,h5,h6,p{
 }
 .foto-imovel-detalhe{
 	max-width: 300px;
+}
+form {
+    display: inline;
 }
