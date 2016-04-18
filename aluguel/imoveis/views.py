@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .forms import ImovelForm
 
 
+
 def home(request):
     return render(request, 'home.html')
 
@@ -11,9 +12,6 @@ def imovel_novo(request):
         form = ImovelForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            #TODO Carregar lat e lng pelo endereço
-            post.latitude = 0 
-            post.longitude = 0
             post.save()
     else:
         form = ImovelForm()
