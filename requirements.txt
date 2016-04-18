@@ -2,5 +2,8 @@ boto==2.39.0
 dj-database-url==0.4.1
 Django==1.8.12
 django-storages==1.4.1
+Pillow==3.2.0
 python-decouple==3.0
+requests==2.9.1
+simplejson==3.8.2
 Unipath==1.1
