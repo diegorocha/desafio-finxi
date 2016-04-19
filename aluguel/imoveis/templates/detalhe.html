@@ -2,27 +2,32 @@
 
 {% block content %}
     <h1>{{imovel.endereco_formatado}}</h1>
+    {% if not imovel.disponivel %}
+    <div class="alert alert-danger" role="alert">
+        <strong>Atenção!</strong> Esse esse imóvel não está mais disponível.
+    </div>
+    {% endif %}
     <div class="row">
-    	<div class="col-md-6">
-	    	<p>{{imovel.descricao}}</p>
-	    	<p><span class="titulo">Quartos: </span>{{imovel.quartos}}</p>
-	    	<p><span class="titulo">Suítes: </span>{{imovel.suites}}</p>
-	    	<p><span class="titulo">Área: </span>{{imovel.area}}</p>
-	    	<p><span class="titulo">Vagas: </span>{{imovel.vagas}}</p>
-	    	<p><span class="titulo">Aluguel: </span>R$ {{imovel.aluguel}}</p>
-	    	<p><span class="titulo">Condomínio: </span>R$ {{imovel.condominio}}</p>
-	    	<p><span class="titulo">IPTU: </span>R$ {{imovel.iptu}}</p>
-	    	<p><span class="titulo">Telefone: </span>{{imovel.telefone}}</p>
-	    	<p><span class="titulo">E-mail: </span>{{imovel.email}}</p>
-	    	<p><span class="titulo">Incluído em : </span>{{imovel.incluido}}</p>
-    	</div>
-    	<div class="col-md-6 text-right">
-    		<img class='foto-imovel-detalhe' src='{{imovel.foto.url}}' alt='{{imovel.descricao}}' title='{{imovel.descricao}}'>    	
-    	</div>
+        <div class="col-md-6">
+            <p>{{imovel.descricao}}</p>
+            <p><span class="titulo">Quartos: </span>{{imovel.quartos}}</p>
+            <p><span class="titulo">Suítes: </span>{{imovel.suites}}</p>
+            <p><span class="titulo">Área: </span>{{imovel.area}}</p>
+            <p><span class="titulo">Vagas: </span>{{imovel.vagas}}</p>
+            <p><span class="titulo">Aluguel: </span>R$ {{imovel.aluguel}}</p>
+            <p><span class="titulo">Condomínio: </span>R$ {{imovel.condominio}}</p>
+            <p><span class="titulo">IPTU: </span>R$ {{imovel.iptu}}</p>
+            <p><span class="titulo">Telefone: </span>{{imovel.telefone}}</p>
+            <p><span class="titulo">E-mail: </span>{{imovel.email}}</p>
+            <p><span class="titulo">Incluído em : </span>{{imovel.incluido}}</p>
+        </div>
+        <div class="col-md-6 text-right">
+            <img class='foto-imovel-detalhe' src='{{imovel.foto.url}}' alt='{{imovel.descricao}}' title='{{imovel.descricao}}'>     
+        </div>
     </div>
     <div class="row">
-    	<iframe width="100%" height="450" frameborder="0" style="border:0"
+        <iframe width="100%" height="450" frameborder="0" style="border:0"
 src="https://www.google.com/maps/embed/v1/place?q={{imovel.endereco_formatado}}&key=AIzaSyA_SSb5mg9DwMWaMtEfR1uZ6MzqLGP_IPA" allowfullscreen></iframe>
     </div>
-
+    <a href="{% url 'imoveis:editar' imovel.id %}"><button type="button" class="save btn btn-default">Editar</button></a>
 {% endblock content %}

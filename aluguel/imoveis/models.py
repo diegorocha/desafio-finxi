@@ -3,7 +3,7 @@ from django.db import models
 from .choices import UF
 from unipath import Path
 from uuid import uuid4
-from .helpers import get_coordenates
+from .helpers import get_coordenates, get_min_max_coordenates
 
 def imovel_foto_path(instance, filename):
     return 'imovel/{}{}'.format(uuid4(), Path(filename).ext)
@@ -35,6 +35,36 @@ class Imovel(models.Model):
     @classmethod
     def get_disponiveis(cls_obj):
         return Imovel.objects.filter(disponivel=True)
+
+    @classmethod
+    def get_proximos_a(cls_obj, latitude, longitude):
+        """
+        Calculos com latitude e longitude são complicados.
+        O ideal seria usar a https://pt.wikipedia.org/wiki/F%C3%B3rmula_de_Haversine
+        para testar a distancia de cada imóvel ao endereço de busca.
+        Mas, além de complicado de implementar numa consultado do django seria problematico
+        quando o banco de dados ficasse cheio de imóveis.
+
+        Resolvi usar a seguinte abordagem:
+        A função get_min_max_coordenates calcula as latitudes e longitudes
+        mínimas e máximas com n km de distancia (aproximada).
+        Nesse caso n=1 km
+
+        Assim, eu filtro os imoveis cujas latitude e longitude fiquem dentro desse quadrado.
+        É claro que essa lista pode retornar imoveis que estejam a mais de 1km de distância
+        do endereço, afinal, geramos um quadrado ao invés de um circulo.
+
+        Como o conjunto de imóveis já foi reduzido, uma solução para isso seria filtrar os imóveis
+        retornado pelo orm novamente, testando a distância entre cada um e ponto através da formula.
+        Os imóveis fora do circúlo, mas retornados pela consulta seriam eliminados,
+        ficando apenas os dentro do circulo.
+
+        """
+        bounds = get_min_max_coordenates(latitude, longitude)
+        return Imovel.objects.filter(latitude__gte=bounds[0],
+                                     latitude__lte=bounds[1],
+                                     longitude__gte=bounds[2],
+                                     longitude__lte=bounds[3])
 
     def save(self, *args, **kwargs):
         #Se um dos dois nao tiver preenchido

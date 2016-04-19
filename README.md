@@ -19,3 +19,19 @@ Nesse modo o arquivo .env não deveria ser versionado (sendo incluido no .gitign
 Utilizei o [dj-database-url](https://github.com/kennethreitz/dj-database-url) para facilitar o decouple da configuração de banco. Uma vez que ele possibilita passar a configuração através de uma única string.
 
 A integração Django x S3 foi feita com o [django-storages](https://github.com/jschneier/django-storages)
+
+A geolocalização foi feita através da [api do google maps](https://developers.google.com/maps/documentation/geocoding/intro?hl=pt-br)
+
+Para integrar o Django com o Google Maps eu utilizei as bibliotecas [requests](http://docs.python-requests.org/en/master/) e [simplejson](http://simplejson.readthedocs.org/en/latest/), para consultar os dados e fazer o parse, respectivamente.
+
+Buscas com latitude e longitude são complicadas, pesquisei se havia algo pronto para o django, encontrei o [GeoDjango](https://docs.djangoproject.com/en/1.9/ref/contrib/gis/), mas para poder utilizar seria necessario configurar um banco de dados de latitude e longitude e a documentação não me ajudou muito. Seria necessário algum tempo para entender como ele funciona para utilizar corretamente. Como a intenção não é um sistema completo e sim um demonstração rápida, optei por utilizar uma abordagem matemática aproximada.
+
+A abordagem matemática mais correta seria usar a [Fórmula de Haversine](https://pt.wikipedia.org/wiki/F%C3%B3rmula_de_Haversine) para testar a distancia de cada imóvel ao endereço de busca. Mas, além de complicado de implementar numa consulta do django, seria problematico quando o banco de dados ficasse cheio de imóveis. Pois seriam realizados várias contas para cada imóvel. 
+
+Pela simplicidade resolvi usar uma aproximação:
+
+A função get_min_max_coordenates calcula as latitudes e longitudes mínimas e máximas com n km de distancia (aproximada). Nesse caso n=1 km
+
+Assim, eu filtro os imoveis cujas latitude e longitude fiquem dentro desse quadrado. É claro que essa lista pode retornar imoveis que estejam a mais de 1km de distância do endereço, afinal, geramos um quadrado ao invés de um circulo.
+
+Como o conjunto de imóveis já foi reduzido, uma solução para isso seria filtrar os imóveis retornados pelo orm novamente, dessa vez sim testando a distância entre cada um e ponto através da formula, os imóveis com distância maior que o desejado seriam removidos do conjunto, restando apenas os dentro do circulo.

@@ -1,3 +1,4 @@
+# coding: utf-8
 from requests import get
 from simplejson import loads
 
@@ -16,3 +17,13 @@ def get_coordenates(endereco):
             except:
                 return None
 
+def get_min_max_coordenates(lat, lng, circle=1):
+    """
+    A abordagem aqui é achar um quadrado, onde seja possivel
+    inscrever um circulo de n km de distancia do ponto central. 
+    Com base nas distâncias calculadas em http://www.longitudestore.com/how-big-is-one-gps-degree.html
+    Eu calculo as latitudes e longitudes minimas e máximas para esse quadrado.
+    """
+    _delta_lat = 0.0089831 * circle
+    _delta_lng = 0.009044 * circle
+    return (lat - _delta_lat, lat + _delta_lat, lng - _delta_lng, lng + _delta_lng)
