@@ -20,8 +20,9 @@ def imovel_novo(request):
     if request.method == "POST":
         form = ImovelForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
+            imovel = form.save(commit=False)
+            imovel.save()
+            return redirect('imoveis:home')
     else:
         form = ImovelForm()
     return render(request, 'editar.html', {'form': form})
@@ -32,9 +33,9 @@ def imovel_editar(request, imovel_id):
     if request.method == "POST":
         form = ImovelForm(request.POST, instance=imovel)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return redirect('imoveis:detalhe', imovel_id)
+            imovel = form.save(commit=False)
+            imovel.save()
+            return redirect('imoveis:detalhe', imovel.pk)
     else:
         form = ImovelForm(instance=imovel)
     return render(request, 'editar.html', {'form': form})
@@ -53,15 +54,15 @@ def imovel_remover_anuncio(request, imovel_id):
 def busca(request, endereco=None):
     if not endereco:
         endereco = request.GET.get('q', None)
-    if endereco:
-        coordenadas = get_coordenates(endereco)
-        if coordenadas:
-            dados = {'endereco': endereco}
-            dados['imoveis'] = Imovel.get_proximos_a(latitude=coordenadas[0], 
-                                                     longitude=coordenadas[1])
-            dados['endereco_formatado'] = coordenadas[2]
-            return render(request, 'busca.html', dados)
-        else:
-            return render(request, 'busca_nao_encontrada.html', {'endereco': endereco})
-    else:
+    if not endereco:
         return redirect('imoveis:home')
+    coordenadas = get_coordenates(endereco)
+    if coordenadas:
+        dados = {'endereco': endereco}
+        dados['imoveis'] = Imovel.get_proximos_a(latitude=coordenadas[0], 
+                                                 longitude=coordenadas[1])
+        dados['endereco_formatado'] = coordenadas[2]
+        return render(request, 'busca.html', dados)
+    else:
+        return render(request, 'busca_nao_encontrada.html', {'endereco': endereco})
+        

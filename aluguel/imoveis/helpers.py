@@ -5,7 +5,8 @@ from simplejson import loads
 def get_coordenates(endereco):
     if endereco:
         url = 'https://maps.googleapis.com/maps/api/geocode/json?address={}'.format(endereco)
-        response = get(url)
+        headers = {'accept-language': 'pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4'}
+        response = get(url, headers=headers)
         if response.status_code == 200:
             try:
                 data = loads(response.text)
@@ -17,7 +18,7 @@ def get_coordenates(endereco):
             except:
                 return None
 
-def get_min_max_coordenates(lat, lng, circle=1):
+def get_min_max_coordenates(lat=0, lng=0, circle=1):
     """
     A abordagem aqui é achar um quadrado, onde seja possivel
     inscrever um circulo de n km de distancia do ponto central. 

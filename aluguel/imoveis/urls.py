@@ -10,5 +10,5 @@ urlpatterns = patterns(
     url(r'^imovel/([0-9]+)/remover$', views.imovel_remover_anuncio, name='remover'),
     url(r'^imovel/novo/$', views.imovel_novo, name='novo'),
     url(r'^busca/$', views.busca, name='busca'),
-    url(r'^busca/(\w+)/$', views.busca, name='busca'),
+    url(r'^busca/(.+)/$', views.busca, name='busca'),
 )
