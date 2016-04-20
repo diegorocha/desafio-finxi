@@ -7,3 +7,4 @@ python-decouple==3.0
 requests==2.9.1
 simplejson==3.8.2
 Unipath==1.1
+model-mommy==1.2.6
