@@ -2,13 +2,13 @@
 
 Desafio do processo seletivo Finxi
 
-##Desafio Python
+## Desafio Python
 
 Desenvolva um sistema web de aluguel de imóveis simples. O sistema deve conter um front com a listagem de imóveis que podem ser alugados que, por sua vez, são cadastrados através de um CMS. Todos os inputs do CMS devem ser feitos utilizando forms. Não utilize o admin do Django.
 Essa tela de listagem precisa possuir um campo de busca por endereço e sugerir imóveis que se encontrem nas proximidades do mesmo.
 É obrigatório que todos os imóveis cadastrados no sistema possuam uma imagem relacionada ao mesmo e esta deve ser subida no S3 da AWS.
 
-##Observações
+## Observações
 
 Utilizei o S3 para o armazenamento da media mas não para o static. Poderia colocar os dois no mesmo bucket em pastas diferentes ou em outro bucket, mas como isso não foi solicitado optei pelo simples e só utilizei o S3 para os arquivos de media.
 
@@ -35,3 +35,46 @@ A função get_min_max_coordenates calcula as latitudes e longitudes mínimas e 
 Assim, eu filtro os imoveis cujas latitude e longitude fiquem dentro desse quadrado. É claro que essa lista pode retornar imoveis que estejam a mais de 1km de distância do endereço, afinal, geramos um quadrado ao invés de um circulo.
 
 Como o conjunto de imóveis já foi reduzido, uma solução para isso seria filtrar os imóveis retornados pelo orm novamente, dessa vez sim testando a distância entre cada um e ponto através da formula, os imóveis com distância maior que o desejado seriam removidos do conjunto, restando apenas os dentro do circulo.
+
+Para ajudar nos testes usei a biblioteca [model_mommy](https://github.com/vandersonmota/model_mommy), que auxilia na criação dos models durante os testes.
+
+## Instruções
+
+### Preparação do ambiente 
+
+Criar um ambiente virtual com o virtualenv (pode ser instalado no Ubuntu/Debian `sudo apt-get install python-virtualenv`)
+
+```sh
+virtualenv -p python3 .
+```
+
+Ativação do ambiente virtual
+
+```sh
+source bin/activate
+
+```
+
+Instalação das dependências python
+```sh
+pip install -r requirements.txt
+
+```
+
+Se ocorrer erros na instalação do pillow será necessário instalar as bibliotecas do sistema operacional necessárias para o seu funcionamento. Mais informações em http://pillow.readthedocs.org/en/3.1.x/installation.html#external-libraries
+
+Entrando na pasta do projeto
+```sh
+cd aluguel
+```
+
+### Testes
+
+```sh
+python3 manage.py tests
+```
+
+### Execução
+```sh
+python3 manage.py runserver
+```
