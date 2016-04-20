@@ -1,0 +1,21 @@
+.post-form input, .post-form label, .post-form span {
+    display:block;
+}
+.container{
+	margin-top: 50px;
+}
+.imovel{
+	margin-bottom: 15px;
+}
+.foto-imovel{
+	max-width: 100%;
+}
+.titulo{
+	font-weight: bold;
+}
+.foto-imovel-detalhe{
+	max-width: 300px;
+}
+.container form {
+    display: inline;
+}
