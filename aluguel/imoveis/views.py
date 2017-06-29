@@ -1,6 +1,8 @@
 # coding: utf-8
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import requires_csrf_token
+from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 
@@ -24,16 +26,12 @@ class ImovelDetailView(DetailView):
     context_object_name = 'imovel'
 
 
-def imovel_novo(request):
-    if request.method == "POST":
-        form = ImovelForm(request.POST, request.FILES)
-        if form.is_valid():
-            imovel = form.save(commit=False)
-            imovel.save()
-            return redirect('imoveis:home')
-    else:
-        form = ImovelForm()
-    return render(request, 'editar.html', {'form': form})
+class NovoImovelView(CreateView):
+    template_name = 'editar.html'
+    form_class = ImovelForm
+
+    def get_success_url(self):
+        return reverse('imoveis:home')
 
 
 def imovel_editar(request, imovel_id):
