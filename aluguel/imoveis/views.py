@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import requires_csrf_token
+from django.views.generic import DetailView
 from django.views.generic import TemplateView
 
 from .helpers import get_coordenates
@@ -15,9 +16,12 @@ class HomeView(TemplateView):
         return Imovel.get_disponiveis()
 
 
-def imovel_detalhe(request, imovel_id):
-    imovel = get_object_or_404(Imovel, pk=imovel_id)
-    return render(request, 'detalhe.html', {'imovel': imovel})
+class ImovelDetailView(DetailView):
+    template_name = 'detalhe.html'
+    queryset = Imovel.objects.all()
+    pk_field = 'pk'
+    pk_url_kwarg = 'imovel_id'
+    context_object_name = 'imovel'
 
 
 def imovel_novo(request):
