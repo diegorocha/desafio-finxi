@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.conf.urls import patterns, url
 
-from .views import HomeView, ImovelDetailView
+from .views import HomeView, ImovelDetailView, BuscaView
 from . import views
 
 urlpatterns = patterns(
@@ -11,6 +11,6 @@ urlpatterns = patterns(
     url(r'^imovel/([0-9]+)/editar$', views.imovel_editar, name='editar'),
     url(r'^imovel/([0-9]+)/remover$', views.imovel_remover_anuncio, name='remover'),
     url(r'^imovel/novo/$', views.imovel_novo, name='novo'),
-    url(r'^busca/$', views.busca, name='busca'),
-    url(r'^busca/(.+)/$', views.busca, name='busca'),
+    url(r'^busca/$', BuscaView.as_view(), name='busca'),
+    url(r'^busca/(?P<endereco>.+)/$', BuscaView.as_view(), name='busca'),
 )

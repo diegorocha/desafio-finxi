@@ -59,17 +59,23 @@ def imovel_remover_anuncio(request, imovel_id):
         return redirect('imoveis:editar', imovel_id)
 
 
-def busca(request, endereco=None):
-    if not endereco:
-        endereco = request.GET.get('q', None)
-    if not endereco:
-        return redirect('imoveis:home')
-    coordenadas = get_coordenates(endereco)
-    if coordenadas:
-        dados = {'endereco': endereco}
-        dados['imoveis'] = Imovel.get_proximos_a(latitude=coordenadas[0],
-                                                 longitude=coordenadas[1])
-        dados['endereco_formatado'] = coordenadas[2]
-        return render(request, 'busca.html', dados)
-    else:
-        return render(request, 'busca_nao_encontrada.html', {'endereco': endereco})
+class BuscaView(TemplateView):
+    template_name = 'busca.html'
+    endereco = None
+    coordenadas = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.endereco = self.kwargs.get('endereco') or self.request.GET.get('q')
+        if not self.endereco:
+            # Sem endereço: Atualiza uma pesquisa sem conteúdo pra home
+            return redirect('imoveis:home')
+        return super(BuscaView, self).dispatch(request, *args, **kwargs)
+
+    def result(self):
+        self.coordenadas = get_coordenates(self.endereco)
+        if self.coordenadas:
+            dados = {'endereco': self.endereco}
+            dados['imoveis'] = Imovel.get_proximos_a(latitude=self.coordenadas[0],
+                                                     longitude=self.coordenadas[1])
+            dados['endereco_formatado'] = self.coordenadas[2]
+            return dados
