@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.core.urlresolvers import reverse
 from django.db import models
 from .choices import UF
 from unipath import Path
@@ -71,6 +72,9 @@ class Imovel(models.Model):
                                                latitude__lte=bounds[1],
                                                longitude__gte=bounds[2],
                                                longitude__lte=bounds[3])
+
+    def get_absolute_url(self):
+        return reverse('imoveis:detalhe', kwargs={'imovel_id': self.pk})
 
     def save(self, *args, **kwargs):
         # Se um dos dois nao tiver preenchido

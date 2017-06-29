@@ -5,6 +5,7 @@ from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 
 from .helpers import get_coordenates
 from .models import Imovel
@@ -34,17 +35,12 @@ class NovoImovelView(CreateView):
         return reverse('imoveis:home')
 
 
-def imovel_editar(request, imovel_id):
-    imovel = get_object_or_404(Imovel, pk=imovel_id)
-    if request.method == "POST":
-        form = ImovelForm(request.POST, instance=imovel)
-        if form.is_valid():
-            imovel = form.save(commit=False)
-            imovel.save()
-            return redirect('imoveis:detalhe', imovel.pk)
-    else:
-        form = ImovelForm(instance=imovel)
-    return render(request, 'editar.html', {'form': form})
+class EditarImovelView(UpdateView):
+    template_name = 'editar.html'
+    form_class = ImovelForm
+    queryset = Imovel.objects.all()
+    pk_field = 'pk'
+    pk_url_kwarg = 'imovel_id'
 
 
 @requires_csrf_token
