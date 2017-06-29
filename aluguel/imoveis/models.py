@@ -15,6 +15,7 @@ class Imovel(models.Model):
         ordering = ('-incluido',)
         verbose_name = 'Imóvel'
         verbose_name_plural = 'Imóveis'
+
     descricao = models.TextField(blank=False, help_text="Insira aqui a descrição do imóvel")
     foto = models.ImageField(blank=False, upload_to=imovel_foto_path)
     endereco = models.CharField(blank=False, max_length=100, help_text="Exemplo: Rua Baronesa, 175")
@@ -66,10 +67,10 @@ class Imovel(models.Model):
 
         """
         bounds = get_min_max_coordenates(latitude, longitude)
-        return Imovel.objects.filter(latitude__gte=bounds[0],
-                                     latitude__lte=bounds[1],
-                                     longitude__gte=bounds[2],
-                                     longitude__lte=bounds[3])
+        return Imovel.get_disponiveis().filter(latitude__gte=bounds[0],
+                                               latitude__lte=bounds[1],
+                                               longitude__gte=bounds[2],
+                                               longitude__lte=bounds[3])
 
     def save(self, *args, **kwargs):
         # Se um dos dois nao tiver preenchido
