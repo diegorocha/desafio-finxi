@@ -2,6 +2,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 from base64 import b64decode
 
+
 def get_sample_form_data(complete=True):
     test_image = '''
 iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVQYV2P4DwABAQEAWk1v8QAAAABJRU5ErkJggg==
@@ -22,12 +23,11 @@ iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVQYV2P4DwABAQEAWk1v8QAAAABJ
     data['telefone'] = '123456789'
     data['email'] = 'email@example.com'
     if complete:
-        data['foto']  = InMemoryUploadedFile(
-                            BytesIO(b64decode(test_image)),
-                            field_name='tempfile',
-                            name='tempfile.png',
-                            content_type='image/png',
-                            size=len(test_image),
-                            charset='utf-8',
-                        )
+        data['foto'] = InMemoryUploadedFile(BytesIO(b64decode(test_image)),
+                                            field_name='tempfile',
+                                            name='tempfile.png',
+                                            content_type='image/png',
+                                            size=len(test_image),
+                                            charset='utf-8',
+                                            )
     return data

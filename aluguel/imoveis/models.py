@@ -5,11 +5,16 @@ from unipath import Path
 from uuid import uuid4
 from .helpers import get_coordenates, get_min_max_coordenates
 
+
 def imovel_foto_path(instance, filename):
     return 'imovel/{}{}'.format(uuid4(), Path(filename).ext)
 
-class Imovel(models.Model):
 
+class Imovel(models.Model):
+    class Meta:
+        ordering = ('-incluido',)
+        verbose_name = 'Imóvel'
+        verbose_name_plural = 'Imóveis'
     descricao = models.TextField(blank=False, help_text="Insira aqui a descrição do imóvel")
     foto = models.ImageField(blank=False, upload_to=imovel_foto_path)
     endereco = models.CharField(blank=False, max_length=100, help_text="Exemplo: Rua Baronesa, 175")
@@ -67,7 +72,7 @@ class Imovel(models.Model):
                                      longitude__lte=bounds[3])
 
     def save(self, *args, **kwargs):
-        #Se um dos dois nao tiver preenchido
+        # Se um dos dois nao tiver preenchido
         if not (self.latitude and self.longitude):
             endereco_busca = '%s, %s' % (self.endereco, self.cidade)
             coordenadas = get_coordenates(endereco=endereco_busca)
@@ -80,12 +85,6 @@ class Imovel(models.Model):
     def remover_anuncio(self):
         self.disponivel = False
         self.save()
-
-
-    class Meta:
-        ordering = ('-incluido',)
-        verbose_name = 'Imóvel'
-        verbose_name_plural = 'Imóveis'
 
     def __str__(self):
         return 'Imóvel em {}'.format(self.endereco)

@@ -4,6 +4,7 @@ from model_mommy import mommy
 from .helpers import get_sample_form_data
 from django.core.urlresolvers import reverse
 
+
 class HomeViewTest(TestCase):
     def setUp(self):
         url = reverse('imoveis:home')
@@ -12,6 +13,7 @@ class HomeViewTest(TestCase):
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
 
+
 class DetalheViewTest(TestCase):
     def setUp(self):
         imovel = mommy.make(Imovel)
@@ -19,7 +21,8 @@ class DetalheViewTest(TestCase):
         self.resp = self.client.get(url)
 
     def test_get(self):
-        self.assertEqual(200, self.resp.status_code) 
+        self.assertEqual(200, self.resp.status_code)
+
 
 class EditarViewTest(TestCase):
     def setUp(self):
@@ -28,18 +31,19 @@ class EditarViewTest(TestCase):
         self.resp = self.client.get(self.url)
 
     def test_get(self):
-        self.assertEqual(200, self.resp.status_code) 
+        self.assertEqual(200, self.resp.status_code)
 
     def test_post_com_erro(self):
-        #Sem nenhum dado
+        # Sem nenhum dado
         resp = self.client.post(self.url)
-        #Em caso de sucesso erro retorna a página com erros
+        # Em caso de sucesso erro retorna a página com erros
         self.assertEqual(200, resp.status_code)
 
     def test_post(self):
         resp = self.client.post(self.url, get_sample_form_data())
-        #Em caso de sucesso redireciona para detalhe
+        # Em caso de sucesso redireciona para detalhe
         self.assertRedirects(resp, reverse('imoveis:detalhe', args=[self.imovel.pk]))
+
 
 class RemoverViewTest(TestCase):
     def setUp(self):
@@ -48,31 +52,33 @@ class RemoverViewTest(TestCase):
 
     def test_get(self):
         resp = self.client.get(self.url, follow=True)
-        #Se for get redireciona para edição
+        # Se for get redireciona para edição
         self.assertRedirects(resp, reverse('imoveis:editar', args=[self.imovel.pk]))
 
     def test_post(self):
         resp = self.client.post(self.url, follow=True)
-        #Em caso de sucesso redireciona para home
+        # Em caso de sucesso redireciona para home
         self.assertRedirects(resp, reverse('imoveis:home'))
+
 
 class NovoViewTest(TestCase):
     def setUp(self):
         self.url = reverse('imoveis:novo')
 
     def test_get(self):
-        self.assertEqual(200, self.client.get(self.url).status_code) 
+        self.assertEqual(200, self.client.get(self.url).status_code)
 
     def test_post_com_erro(self):
-        #Sem nenhum dado
+        # Sem nenhum dado
         resp = self.client.post(self.url)
-        #Em caso de sucesso erro retorna a página com erros
+        # Em caso de sucesso erro retorna a página com erros
         self.assertEqual(200, resp.status_code)
 
     def test_post(self):
         resp = self.client.post(self.url, get_sample_form_data())
-        #Em caso de sucesso redireciona para home
+        # Em caso de sucesso redireciona para home
         self.assertRedirects(resp, reverse('imoveis:home'))
+
 
 class BuscaViewTest(TestCase):
     def setUp(self):
@@ -80,7 +86,7 @@ class BuscaViewTest(TestCase):
         self.resp = self.client.get(self.url)
 
     def test_get(self):
-        #É esperado que uma busca vazia seja redirecionada para home
+        # É esperado que uma busca vazia seja redirecionada para home
         self.assertRedirects(self.resp, reverse('imoveis:home'))
 
     def test_busca_endereco_invalido(self):

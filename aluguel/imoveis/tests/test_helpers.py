@@ -1,5 +1,7 @@
 from django.test import TestCase
-from ..helpers import *
+
+from aluguel.imoveis import helpers
+
 
 class HelpersTest(TestCase):
 
@@ -9,19 +11,19 @@ class HelpersTest(TestCase):
 
     def test_get_min_max_coordenates(self):
         """Garante que os valores retornados estão corretos."""
-        bounds = get_min_max_coordenates()
+        bounds = helpers.get_min_max_coordenates()
         self.assertEqual((-self.lat_delta, self.lat_delta, -self.lng_delta, self.lng_delta), bounds)
 
     def test_get_min_max_coordenates_2(self):
         """Garante que os valores retornados estão corretos."""
-        bounds = get_min_max_coordenates(20, 30)
+        bounds = helpers.get_min_max_coordenates(20, 30)
         self.assertEqual((20 - self.lat_delta, 20 + self.lat_delta, 30 - self.lng_delta, 30 + self.lng_delta), bounds)
 
     def test_get_coordenates_endereco_invalido(self):
-        coordenadas = get_coordenates("")
+        coordenadas = helpers.get_coordenates("")
         self.assertEqual(None, coordenadas)
 
     def test_get_coordenates_endereco_valido(self):
-        coordenadas = get_coordenates("Rua da Quitanda, 86, Rio de Janeiro")
+        coordenadas = helpers.get_coordenates("Rua da Quitanda, 86, Rio de Janeiro")
         expected = (-22.9026854, -43.1769713, 'R. da Quitanda, 86 - Centro, Rio de Janeiro - RJ, Brasil')
         self.assertEqual(expected, coordenadas)

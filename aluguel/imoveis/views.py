@@ -67,10 +67,9 @@ def busca(request, endereco=None):
     coordenadas = get_coordenates(endereco)
     if coordenadas:
         dados = {'endereco': endereco}
-        dados['imoveis'] = Imovel.get_proximos_a(latitude=coordenadas[0], 
+        dados['imoveis'] = Imovel.get_proximos_a(latitude=coordenadas[0],
                                                  longitude=coordenadas[1])
         dados['endereco_formatado'] = coordenadas[2]
         return render(request, 'busca.html', dados)
     else:
         return render(request, 'busca_nao_encontrada.html', {'endereco': endereco})
-        

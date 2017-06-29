@@ -4,7 +4,6 @@ from dj_database_url import parse as db_url
 
 BASE_DIR = Path(__file__).parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -15,7 +14,6 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -65,16 +63,14 @@ TEMPLATE_LOADERS = (
 
 WSGI_APPLICATION = 'aluguel.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': config('DATABASE_URL',
-        default='sqlite:///' + BASE_DIR.child('db.sqlite3'),
-        cast=db_url)
+                      default='sqlite:///' + BASE_DIR.child('db.sqlite3'),
+                      cast=db_url)
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -89,13 +85,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR.child('static')
-STATICFILES_DIRS = (BASE_DIR.child('staticfiles'), )
+STATICFILES_DIRS = (BASE_DIR.child('staticfiles'),)
 
 DEFAULT_FILE_STORAGE = 'libs.storages.S3Storage.S3Storage'
 

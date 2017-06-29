@@ -5,17 +5,18 @@ from ..helpers import get_coordenates
 from model_mommy import mommy
 from requests import get
 
+
 class ImovelTest(TestCase):
     def setUp(self):
         self.imovel = mommy.make(Imovel)
         for i in range(9):
             imovel = mommy.make(Imovel)
-            #Corrige para um endereço de verdade
+            # Corrige para um endereço de verdade
             imovel.endereco = 'Rua Baronesa, 175'
             imovel.cidade = 'Rio de Janeiro'
             imovel.latitude = -22.8950148
             imovel.longitude = -43.3542673
-            #Remove metade dos anúncios
+            # Remove metade dos anúncios
             if i % 2 == 0:
                 imovel.disponivel = False
             imovel.save()
@@ -65,7 +66,7 @@ class ImovelTest(TestCase):
         retornos = []
         for imovel in Imovel.objects.all():
             r = get(imovel.foto.url)
-            #Salva o retorno das chamadas http da url das imagens ou None se não tiver
+            # Salva o retorno das chamadas http da url das imagens ou None se não tiver
             retornos.append(r.status_code if r else None)
         self.assertEqual([200] * len(retornos), retornos)
 

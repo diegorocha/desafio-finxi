@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('imoveis.urls', namespace='imoveis')),
 ]
-if settings.DEBUG == True:
+
+if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()

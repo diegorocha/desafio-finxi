@@ -2,6 +2,7 @@
 from requests import get
 from simplejson import loads
 
+
 def get_coordenates(endereco):
     if endereco:
         url = 'https://maps.googleapis.com/maps/api/geocode/json?address={}'.format(endereco)
@@ -18,10 +19,11 @@ def get_coordenates(endereco):
             except:
                 return None
 
+
 def get_min_max_coordenates(lat=0, lng=0, circle=1):
     """
     A abordagem aqui é achar um quadrado, onde seja possivel
-    inscrever um circulo de n km de distancia do ponto central. 
+    inscrever um circulo de n km de distancia do ponto central.
     Com base nas distâncias calculadas em http://www.longitudestore.com/how-big-is-one-gps-degree.html
     Eu calculo as latitudes e longitudes minimas e máximas para esse quadrado.
     """
