@@ -1,14 +1,18 @@
 # coding: utf-8
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import requires_csrf_token
+from django.views.generic import TemplateView
+
 from .helpers import get_coordenates
 from .models import Imovel
 from .forms import ImovelForm
 
 
-def home(request):
-    imoveis = Imovel.get_disponiveis()
-    return render(request, 'home.html', {'imoveis': imoveis})
+class HomeView(TemplateView):
+    template_name = 'home.html'
+
+    def imoveis(self):
+        return Imovel.get_disponiveis()
 
 
 def imovel_detalhe(request, imovel_id):
