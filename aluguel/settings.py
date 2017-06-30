@@ -26,6 +26,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
     'imoveis'
 )
 
@@ -109,6 +110,15 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/" % (AWS_S3_CUSTOM_DOMAIN)
 DEFAULT_FILE_STORAGE = config(DEFAULT_FILE_STORAGE, default='storages.backends.s3boto.S3BotoStorage')
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-html',
+    '--cover-html-dir=htmlcov',
+    '--cover-package=aluguel,imoveis'
+]
 
 if 'test' in argv or 'test_coverage' in argv:  # Confifurações específicas para os testes
     DEFAULT_FILE_STORAGE = 'inmemorystorage.InMemoryStorage'
