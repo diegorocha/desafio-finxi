@@ -1,21 +1,38 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+        {% if form.instance.id %}
+        <div class="modal fade" id="modalRemoverAnuncio">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5><strong>Deseja mesmo remover o anúncio?</strong></h5>
+                        <form method="POST" action="{% url 'imoveis:remover' form.instance.id %}" enctype="multipart/form-data" class="post-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Sim</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         {% if form.instance.id %}
         <h1>{{form.instance.endereco_formatado}}</h1>
         {% else %}
         <h1>Novo Imóvel</h1>
         {% endif %}
-        <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-success">Guardar</button>
-    	</form>
-
-    	{% if form.instance.id %}
-    	<form method="POST" action="{% url 'imoveis:remover' form.instance.id %}" enctype="multipart/form-data" class="post-form">
-    	{% csrf_token %}
-        <button type="submit" class="save btn btn-danger">Remover Anúncio</button>
+        <form method="POST" enctype="multipart/form-data" class="post-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-success">Salvar</button>
+            {% if form.instance.id %}
+            <button type="button" class="save btn btn-danger" data-toggle="modal" data-target="#modalRemoverAnuncio">Remover Anúncio</button>
+            {% endif %}
         </form>
-        {% endif %}
-
 {% endblock content %}
