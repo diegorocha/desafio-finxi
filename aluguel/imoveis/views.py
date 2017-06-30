@@ -1,11 +1,11 @@
 # coding: utf-8
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.csrf import requires_csrf_token
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
+from django.views.generic import View
 
 from .helpers import get_coordenates
 from .models import Imovel
@@ -43,14 +43,12 @@ class EditarImovelView(UpdateView):
     pk_url_kwarg = 'imovel_id'
 
 
-@requires_csrf_token
-def imovel_remover_anuncio(request, imovel_id):
-    imovel = get_object_or_404(Imovel, pk=imovel_id)
-    if request.method == "POST":
+class RemoverAnuncioView(View):
+
+    def post(self, request, *args, **kwargs):
+        imovel = get_object_or_404(Imovel, pk=kwargs.get('imovel_id'))
         imovel.remover_anuncio()
         return redirect('imoveis:home')
-    else:
-        return redirect('imoveis:editar', imovel_id)
 
 
 class BuscaView(TemplateView):
