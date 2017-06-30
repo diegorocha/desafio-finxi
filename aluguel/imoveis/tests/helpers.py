@@ -1,6 +1,6 @@
+from base64 import b64decode
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
-from base64 import b64decode
 
 
 def get_sample_form_data(complete=True):

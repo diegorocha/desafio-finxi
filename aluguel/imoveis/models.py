@@ -1,10 +1,12 @@
 # coding: utf-8
+from uuid import uuid4
+
 from django.core.urlresolvers import reverse
 from django.db import models
-from .choices import UF
 from unipath import Path
-from uuid import uuid4
-from .helpers import get_coordenates, get_min_max_coordenates
+
+from aluguel.imoveis.choices import UF
+from aluguel.imoveis.helpers import get_min_max_coordenates, get_coordenates
 
 
 def imovel_foto_path(instance, filename):

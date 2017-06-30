@@ -7,9 +7,9 @@ from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 from django.views.generic import View
 
-from .helpers import get_coordenates
-from .models import Imovel
-from .forms import ImovelForm
+from aluguel.imoveis.forms import ImovelForm
+from aluguel.imoveis.helpers import get_coordenates
+from aluguel.imoveis.models import Imovel
 
 
 class HomeView(TemplateView):

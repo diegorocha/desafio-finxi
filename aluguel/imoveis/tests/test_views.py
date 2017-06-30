@@ -1,8 +1,9 @@
-from django.test import TestCase
-from ..models import Imovel
-from model_mommy import mommy
-from .helpers import get_sample_form_data
 from django.core.urlresolvers import reverse
+from django.test import TestCase
+from model_mommy import mommy
+
+from aluguel.imoveis.models import Imovel
+from aluguel.imoveis.tests.helpers import get_sample_form_data
 
 
 class HomeViewTest(TestCase):

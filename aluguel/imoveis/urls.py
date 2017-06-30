@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.conf.urls import patterns, url
 
-from .views import HomeView, ImovelDetailView, BuscaView, NovoImovelView, EditarImovelView, RemoverAnuncioView
+from aluguel.imoveis.views import HomeView, ImovelDetailView, BuscaView, NovoImovelView, EditarImovelView, RemoverAnuncioView
 
 urlpatterns = patterns(
     'imoveis.views',

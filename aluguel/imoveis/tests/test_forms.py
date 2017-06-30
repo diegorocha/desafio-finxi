@@ -1,6 +1,7 @@
 from django.test import TestCase
-from .helpers import get_sample_form_data
-from ..forms import ImovelForm
+
+from aluguel.imoveis.forms import ImovelForm
+from aluguel.imoveis.tests.helpers import get_sample_form_data
 
 
 class ImovelFormTest(TestCase):
