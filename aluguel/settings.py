@@ -1,3 +1,5 @@
+from sys import argv
+
 from decouple import config
 from unipath import Path
 from dj_database_url import parse as db_url
@@ -107,3 +109,6 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/" % (AWS_S3_CUSTOM_DOMAIN)
 DEFAULT_FILE_STORAGE = config(DEFAULT_FILE_STORAGE, default='storages.backends.s3boto.S3BotoStorage')
+
+if 'test' in argv or 'test_coverage' in argv:  # Confifurações específicas para os testes
+    DEFAULT_FILE_STORAGE = 'inmemorystorage.InMemoryStorage'
