@@ -1,6 +1,6 @@
 from django import forms
 
-from aluguel.imoveis.models import Imovel
+from imoveis.models import Imovel
 
 
 class ImovelForm(forms.ModelForm):

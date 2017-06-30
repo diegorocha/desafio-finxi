@@ -3,8 +3,8 @@ from django.test import TestCase
 from model_mommy import mommy
 from requests import get
 
-from aluguel.imoveis.helpers import get_coordenates
-from aluguel.imoveis.models import Imovel
+from imoveis.helpers import get_coordenates
+from imoveis.models import Imovel
 
 
 class ImovelTest(TestCase):

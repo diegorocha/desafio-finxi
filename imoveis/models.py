@@ -5,8 +5,8 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from unipath import Path
 
-from aluguel.imoveis.choices import UF
-from aluguel.imoveis.helpers import get_min_max_coordenates, get_coordenates
+from imoveis.choices import UF
+from imoveis.helpers import get_min_max_coordenates, get_coordenates
 
 
 def imovel_foto_path(instance, filename):

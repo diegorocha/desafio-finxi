@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from aluguel.imoveis import helpers
+from imoveis import helpers
 
 
 class HelpersTest(TestCase):
