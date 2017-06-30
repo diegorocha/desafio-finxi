@@ -1,5 +1,8 @@
 # Desafio Finxi
 
+[![Build Status](https://travis-ci.org/diegorocha/desafio-finxi.svg?branch=master)](https://travis-ci.org/diegorocha/desafio-finxi)
+[![Coverage Status](https://coveralls.io/repos/github/diegorocha/desafio-finxi/badge.svg?branch=master)](https://coveralls.io/github/diegorocha/desafio-finxi?branch=master)
+
 Desafio do processo seletivo Finxi
 
 ## Desafio Python
@@ -78,3 +81,4 @@ python3 manage.py tests
 ```sh
 python3 manage.py runserver
 ```
+
