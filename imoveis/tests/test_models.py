@@ -63,13 +63,5 @@ class ImovelTest(TestCase):
         self.imovel.remover_anuncio()
         self.assertFalse(self.imovel.disponivel)
 
-    def test_url_foto(self):
-        retornos = []
-        for imovel in Imovel.objects.all():
-            r = get(imovel.foto.url)
-            # Salva o retorno das chamadas http da url das imagens ou None se não tiver
-            retornos.append(r.status_code if r else None)
-        self.assertEqual([200] * len(retornos), retornos)
-
     def test_str(self):
         self.assertTrue('Imóvel em %s' % self.imovel.endereco, str(self.imovel))

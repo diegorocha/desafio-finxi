@@ -54,7 +54,7 @@ class RemoverViewTest(TestCase):
     def test_get(self):
         resp = self.client.get(self.url, follow=True)
         # Se for get redireciona para edição
-        self.assertRedirects(resp, reverse('imoveis:editar', args=[self.imovel.pk]))
+        self.assertEquals(405, resp.status_code)
 
     def test_post(self):
         resp = self.client.post(self.url, follow=True)
