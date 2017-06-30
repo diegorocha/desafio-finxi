@@ -1,7 +1,9 @@
+from itertools import cycle
+
 from django.db.utils import IntegrityError
 from django.test import TestCase
 from model_mommy import mommy
-from requests import get
+from model_mommy.recipe import Recipe
 
 from imoveis.helpers import get_coordenates
 from imoveis.models import Imovel
@@ -10,17 +12,15 @@ from imoveis.models import Imovel
 class ImovelTest(TestCase):
     def setUp(self):
         self.imovel = mommy.make(Imovel)
-        for i in range(9):
-            imovel = mommy.make(Imovel)
-            # Corrige para um endereço de verdade
-            imovel.endereco = 'Rua Baronesa, 175'
-            imovel.cidade = 'Rio de Janeiro'
-            imovel.latitude = -22.8950148
-            imovel.longitude = -43.3542673
-            # Remove metade dos anúncios
-            if i % 2 == 0:
-                imovel.disponivel = False
-            imovel.save()
+        imoveis_recipe = Recipe(Imovel,
+                                endereco='Rua Baronesa, 175',
+                                cidade='Rio de Janeiro',
+                                latitude=-22.8950148,
+                                longitude=-43.3542673,
+                                disponivel=cycle([False, True])
+                                )
+        # Cria 9 imóveis alterando disponíveis e indisponíveis
+        imoveis_recipe.make(_quantity=9)
 
     def test_get_disponiveis_qtd(self):
         """Garante que tem 5 imóveis disponíveis apenas"""
