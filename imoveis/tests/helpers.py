@@ -1,12 +1,21 @@
-from base64 import b64decode
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.base import ContentFile
 from io import BytesIO
+
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+
+def get_sample_foto():
+    """ Gera uma imagem de 5x5 na memória e retorna um array de bytes"""
+    img = Image.new('RGB', (5, 5))
+    img_bytes = BytesIO()
+    img.save(img_bytes, format='PNG')
+    buffer = img_bytes.getvalue()
+    return ContentFile(buffer)
 
 
 def get_sample_form_data(complete=True):
-    test_image = '''
-iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVQYV2P4DwABAQEAWk1v8QAAAABJRU5ErkJggg==
-'''.strip()
+    image_sample = get_sample_foto()
     data = {}
     data['descricao'] = 'Teste'
     data['endereco'] = 'Rua Baronesa, 175'
@@ -23,11 +32,11 @@ iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVQYV2P4DwABAQEAWk1v8QAAAABJ
     data['telefone'] = '123456789'
     data['email'] = 'email@example.com'
     if complete:
-        data['foto'] = InMemoryUploadedFile(BytesIO(b64decode(test_image)),
-                                            field_name='tempfile',
+        data['foto'] = InMemoryUploadedFile(image_sample,
+                                            field_name='foto',
                                             name='tempfile.png',
                                             content_type='image/png',
-                                            size=len(test_image),
+                                            size=image_sample.size,
                                             charset='utf-8',
                                             )
     return data
