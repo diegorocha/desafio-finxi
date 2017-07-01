@@ -3,6 +3,7 @@ coverage==4.0.3
 dj-database-url==0.4.1
 dj-inmemorystorage==1.4.1
 Django==1.8.12
+django-crispy-forms==1.6.1
 django-storages==1.4.1
 flake8==3.3.0
 mccabe==0.6.1

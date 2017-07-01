@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 from django.views.generic import View
 
-from imoveis.forms import ImovelForm
+from imoveis.forms import ImovelForm, ImovelFormHelper
 from imoveis.helpers import get_coordenates
 from imoveis.models import Imovel
 
