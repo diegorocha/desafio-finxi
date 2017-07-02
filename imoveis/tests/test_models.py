@@ -5,7 +5,7 @@ from django.test import TestCase
 from model_mommy import mommy
 from model_mommy.recipe import Recipe
 
-from imoveis.helpers import get_coordenates
+from imoveis.helpers import get_coordenates, get_min_max_coordenates
 from imoveis.models import Imovel
 
 
@@ -44,7 +44,30 @@ class ImovelTest(TestCase):
     def test_get_proximos(self):
         coordenadas = get_coordenates("Rua Baronesa, 300, Rio de Janeiro")
         imoveis = Imovel.get_proximos_a(latitude=coordenadas[0], longitude=coordenadas[1])
-        self.assertLess(0, len(imoveis))
+        self.assertGreater(len(imoveis), 0)
+
+    def test_get_proximos_mais_longe(self):
+        coordenadas = get_coordenates("Rua Nelson Cardoso, 300, Rio de Janeiro")
+        imoveis = Imovel.get_proximos_a(latitude=coordenadas[0], longitude=coordenadas[1])
+        self.assertEquals(len(imoveis), 0)
+
+    def test_get_proximos_mais_longe_haversine(self):
+        """ Esse endereço fica a 1.2km do endereço que possui imóveis
+        Porém ele fica dentro das coordenadas mínimas e máximas.
+        A validação adicional através da fórmula garante que nenhum resultado será encontrado
+        """
+        coordenadas = get_coordenates("Rua Luiz Beltrão, 646, Rio de Janeiro")
+
+        # Garante que o endereço pesquisado está dentro do "quadrado" inicial de filtragem
+        bounds = get_min_max_coordenates(self.lat_base, self.lng_base)
+        self.assertGreaterEqual(coordenadas[0], bounds[0])
+        self.assertLessEqual(coordenadas[0], bounds[1])
+        self.assertGreater(coordenadas[1], bounds[2])
+        self.assertLessEqual(coordenadas[1], bounds[3])
+
+        # Procura imóveis na região do endereço, mas graças a fórmula ninguém é encontrado
+        imoveis = Imovel.get_proximos_a(latitude=coordenadas[0], longitude=coordenadas[1])
+        self.assertEquals(len(imoveis), 0)
 
     def test_custom_save_erro(self):
         imovel = self.basic_imovel_recipe.prepare()
