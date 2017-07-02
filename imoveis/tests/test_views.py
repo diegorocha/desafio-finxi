@@ -129,6 +129,7 @@ class NovoViewTest(TestCase):
 
 class BuscaViewTest(TestCase):
     def setUp(self):
+        mommy.make(Imovel, endereco='Rua Cândido Benício, 1300', cidade='Rio de Janeiro', latitude=None, longitude=None)
         self.url = reverse('imoveis:busca')
 
     def test_get(self):
@@ -142,13 +143,17 @@ class BuscaViewTest(TestCase):
         self.assertIsNone(resp.context_data['view'].result())
 
     def test_busca_endereco_ok(self):
-        mommy.make(Imovel, endereco='Rua Cândido Benício, 1300', cidade='Rio de Janeiro', latitude=None, longitude=None)
-        resp = self.client.get(reverse('imoveis:busca', args=['Rua Cândido Benício, 1300']))
+        resp = self.client.get(reverse('imoveis:busca', args=['Rua Baronesa, 175']))
         self.assertEqual(200, resp.status_code)
         self.assertEquals(1, len(resp.context_data['view'].result()['imoveis']))
 
+    def test_busca_endereco_nenhum_resultado(self):
+        resp = self.client.get(reverse('imoveis:busca', args=['Rua Vieira Souto, Rio de Janeiro']))
+        self.assertEqual(200, resp.status_code)
+        self.assertEquals(0, len(resp.context_data['view'].result()['imoveis']))
+
     def test_busca_endereco_sem_dados(self):
         Imovel.objects.all().delete()
-        resp = self.client.get(reverse('imoveis:busca', args=['Rua Vieira Souto, Rio de Janeiro']))
+        resp = self.client.get(reverse('imoveis:busca', args=['Rua Baronesa, 175']))
         self.assertEqual(200, resp.status_code)
         self.assertEquals(0, len(resp.context_data['view'].result()['imoveis']))
