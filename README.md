@@ -45,17 +45,10 @@ Para ajudar nos testes usei a biblioteca [model_mommy](https://github.com/vander
 
 ### Preparação do ambiente 
 
-Criar um ambiente virtual com o virtualenv (pode ser instalado no Ubuntu/Debian `sudo apt-get install python-virtualenv`)
+Criar um ambiente virtual com o [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)
 
 ```sh
-virtualenv -p python3 .
-```
-
-Ativação do ambiente virtual
-
-```sh
-source bin/activate
-
+mkvirtualenv desafio-finxi -p python3
 ```
 
 Instalação das dependências python
@@ -66,15 +59,16 @@ pip install -r requirements.txt
 
 Se ocorrer erros na instalação do pillow será necessário instalar as bibliotecas do sistema operacional necessárias para o seu funcionamento. Mais informações em http://pillow.readthedocs.org/en/3.1.x/installation.html#external-libraries
 
-Entrando na pasta do projeto
-```sh
-cd aluguel
-```
-
 ### Testes
 
 ```sh
 python3 manage.py tests
+```
+
+### Testes com coverage
+
+```sh
+./tests.sh
 ```
 
 ### Execução
