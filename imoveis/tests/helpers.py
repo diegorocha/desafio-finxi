@@ -20,7 +20,7 @@ def get_sample_foto():
 def get_sample_form_data(with_photo=True):
     image_sample = get_sample_foto()
     # Precisa ser um endereço válido
-    mock_imovel = mommy.prepare(Imovel, endereco='Rua Baronesa, 175', cidade='Rio de Janeiro', _fill_optional=True)
+    mock_imovel = mommy.prepare(Imovel, endereco='Rua Baronesa, 175', cidade='Rio de Janeiro', uf='RJ', _fill_optional=True)
     data = {}
     data['descricao'] = mock_imovel.descricao
     data['endereco'] = mock_imovel.endereco

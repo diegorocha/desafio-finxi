@@ -27,7 +27,7 @@ class HelpersTest(TestCase):
 
     def test_get_coordenates_endereco_invalido(self):
         coordenadas = helpers.get_coordenates("")
-        self.assertEqual(None, coordenadas)
+        self.assertIsNone(coordenadas)
 
     def test_get_coordenates_endereco_valido(self):
         cases = [
