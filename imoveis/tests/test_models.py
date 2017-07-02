@@ -11,12 +11,17 @@ from imoveis.models import Imovel
 
 class ImovelTest(TestCase):
     def setUp(self):
+        self.endereco_base = 'Rua Baronesa, 175'
+        self.cidade_base = 'Rio de Janeiro'
+        self.lat_base = -22.8950148
+        self.lng_base = -43.3542673
         self.imovel = mommy.make(Imovel)
+        self.basic_imovel_recipe = Recipe(Imovel, latitude=None, longitude=None)
         imoveis_recipe = Recipe(Imovel,
-                                endereco='Rua Baronesa, 175',
-                                cidade='Rio de Janeiro',
-                                latitude=-22.8950148,
-                                longitude=-43.3542673,
+                                endereco=self.endereco_base,
+                                cidade=self.cidade_base,
+                                latitude=self.lat_base,
+                                longitude=self.lng_base,
                                 disponivel=cycle([False, True])
                                 )
         # Cria 9 imóveis alterando disponíveis e indisponíveis
@@ -42,18 +47,12 @@ class ImovelTest(TestCase):
         self.assertLess(0, len(imoveis))
 
     def test_custom_save_erro(self):
-        imovel = mommy.make(Imovel)
-        imovel.latitude = None
-        imovel.longitude = None
+        imovel = self.basic_imovel_recipe.prepare()
         with self.assertRaises(IntegrityError):
             imovel.save()
 
     def test_custom_save(self):
-        imovel = mommy.make(Imovel)
-        imovel.latitude = None
-        imovel.longitude = None
-        imovel.endereco = 'Rua Baronesa, 175'
-        imovel.cidade = 'Rio de Janeiro'
+        imovel = self.basic_imovel_recipe.prepare(endereco=self.endereco_base, cidade=self.cidade_base)
         imovel.save()
         self.assertIsNotNone(imovel.latitude)
         self.assertIsNotNone(imovel.longitude)

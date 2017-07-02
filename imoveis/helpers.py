@@ -2,6 +2,9 @@
 from requests import get
 from simplejson import loads
 
+LAT_DELTA = 0.0089831
+LNG_DELTA = 0.009044
+
 
 def get_coordenates(endereco):
     if endereco:
@@ -15,7 +18,7 @@ def get_coordenates(endereco):
                 endereco_formatado = results['formatted_address']
                 lat = results['geometry']['location']['lat']
                 lng = results['geometry']['location']['lng']
-                return (lat, lng, endereco_formatado)
+                return lat, lng, endereco_formatado
             except:
                 return None
 
@@ -27,6 +30,6 @@ def get_min_max_coordenates(lat=0, lng=0, circle=1):
     Com base nas distâncias calculadas em http://www.longitudestore.com/how-big-is-one-gps-degree.html
     Eu calculo as latitudes e longitudes minimas e máximas para esse quadrado.
     """
-    _delta_lat = 0.0089831 * circle
-    _delta_lng = 0.009044 * circle
-    return (lat - _delta_lat, lat + _delta_lat, lng - _delta_lng, lng + _delta_lng)
+    _delta_lat = LAT_DELTA * circle
+    _delta_lng = LNG_DELTA * circle
+    return lat - _delta_lat, lat + _delta_lat, lng - _delta_lng, lng + _delta_lng
