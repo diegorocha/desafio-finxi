@@ -9,7 +9,7 @@
     {% endif %}
     <div class="row detalhe-row">
         <div class="col-md-10">
-            <p>{{imovel.descricao}}</p>
+            <p>{{imovel.descricao|linebreaks}}</p>
             <div class="row">
                 <div class="col-sm-3">
                     <p><span class="titulo">Quartos:</span> {{imovel.quartos}}</p>
