@@ -1,0 +1,21 @@
+[run]
+source = .
+
+[report]
+omit = */migrations/*,*/wsgi.py,*/tests.py,*/apps.py,*/settings.py
+exclude_lines =
+  pragma: no cover
+
+    if self\.debug
+    if settings\.DEBUG
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+
+
+show_missing = True

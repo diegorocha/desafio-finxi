@@ -1,0 +1,12 @@
+language: python
+env:
+  - SECRET_KEY=")vjn2yf9+7l&llpv3_ieqyoz^w)f02$h%$hja%em7^1+yhbl&z"
+python:
+  - "3.5"
+before_install:
+  - pip install --upgrade pip
+install:
+  - pip install -r requirements.txt
+script: coverage run manage.py test
+after_success:
+- coveralls

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 UF = (
     ('', 'Escolha uma opção'),
     ('AC', 'Acre'),

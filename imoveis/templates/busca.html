@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <h1>Imóveis</h1>
+        <h1>Resultado da Busca</h1>
+        {% if view.result %}
+        <p>Exibindo imóveis próximos a {{view.result.endereco_formatado}}</p>
         <div class="row">
-            {% for imovel in imoveis %}
+            {% for imovel in view.result.imoveis %}
             <div class="row imovel">
             	<a href='{% url 'imoveis:detalhe' imovel.id %}'>
 		            <div class="col-md-2 item-catalogo">
@@ -21,4 +23,12 @@
             <p align="center">Nenhum imóvel disponível.</p>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="row">
+            <div class="alert alert-danger" role="alert">
+                <p><strong>Não encontrado!</strong> Não foi possível encontrar nenhum endereço "{{view.endereco}}".</p>
+                <p>Tente colocar o endereço completo. <strong>Por exemplo, "Rua da Quitanda, 86, Rio de Janeiro"</strong></p>
+            </div>
+        </div>
+        {% endif %}
 {% endblock content %}

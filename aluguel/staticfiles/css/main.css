@@ -13,9 +13,20 @@
 .titulo{
 	font-weight: bold;
 }
-.foto-imovel-detalhe{
-	max-width: 300px;
-}
 .container form {
     display: inline;
+}
+.detalhe-row{
+	padding-bottom: 15px;
+}
+.mapa{
+	border: 0;
+	width: 100%;
+	height: 450px;
+}
+.post-form-field{
+    margin-bottom: 5px;
+}
+input#id_endereco{
+    width: 100%;
 }
