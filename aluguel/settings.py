@@ -1,9 +1,10 @@
+from sys import argv
+
 from decouple import config
 from unipath import Path
 from dj_database_url import parse as db_url
 
 BASE_DIR = Path(__file__).parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -16,7 +17,6 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -26,6 +26,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'imoveis'
 )
 
@@ -58,23 +59,16 @@ TEMPLATES = [
     },
 ]
 
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
 WSGI_APPLICATION = 'aluguel.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': config('DATABASE_URL',
-        default='sqlite:///' + BASE_DIR.child('db.sqlite3'),
-        cast=db_url)
+                      default='sqlite:///' + BASE_DIR.child('db.sqlite3'),
+                      cast=db_url)
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -89,13 +83,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR.child('static')
-STATICFILES_DIRS = (BASE_DIR.child('staticfiles'), )
+STATICFILES_DIRS = (BASE_DIR.child('staticfiles'),)
 
 DEFAULT_FILE_STORAGE = 'libs.storages.S3Storage.S3Storage'
 
@@ -112,3 +105,6 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/" % (AWS_S3_CUSTOM_DOMAIN)
 DEFAULT_FILE_STORAGE = config(DEFAULT_FILE_STORAGE, default='storages.backends.s3boto.S3BotoStorage')
+
+if 'test' in argv or 'test_coverage' in argv:  # Confifurações específicas para os testes
+    DEFAULT_FILE_STORAGE = 'inmemorystorage.InMemoryStorage'

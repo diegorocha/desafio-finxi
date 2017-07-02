@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <h1>Resultado da Busca</h1>
-        <p>Exibindo imóveis próximos a {{endereco_formatado}}</p>
+        <h1>Imóveis</h1>
         <div class="row">
-            {% for imovel in imoveis %}
+            {% for imovel in view.imoveis %}
             <div class="row imovel">
             	<a href='{% url 'imoveis:detalhe' imovel.id %}'>
 		            <div class="col-md-2 item-catalogo">

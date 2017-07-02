@@ -1,14 +1,24 @@
 # coding: utf-8
-from django.db import models
-from .choices import UF
-from unipath import Path
 from uuid import uuid4
-from .helpers import get_coordenates, get_min_max_coordenates
+
+from django.core.urlresolvers import reverse
+from django.db import models
+from haversine import haversine
+from unipath import Path
+
+from imoveis.choices import UF
+from imoveis.helpers import get_min_max_coordenates, get_coordenates
+
 
 def imovel_foto_path(instance, filename):
     return 'imovel/{}{}'.format(uuid4(), Path(filename).ext)
 
+
 class Imovel(models.Model):
+    class Meta:
+        ordering = ('-incluido',)
+        verbose_name = 'Imóvel'
+        verbose_name_plural = 'Imóveis'
 
     descricao = models.TextField(blank=False, help_text="Insira aqui a descrição do imóvel")
     foto = models.ImageField(blank=False, upload_to=imovel_foto_path)
@@ -54,20 +64,26 @@ class Imovel(models.Model):
         É claro que essa lista pode retornar imoveis que estejam a mais de 1km de distância
         do endereço, afinal, geramos um quadrado ao invés de um circulo.
 
-        Como o conjunto de imóveis já foi reduzido, uma solução para isso seria filtrar os imóveis
-        retornado pelo orm novamente, testando a distância entre cada um e ponto através da formula.
-        Os imóveis fora do circúlo, mas retornados pela consulta seriam eliminados,
+        Como o conjunto de imóveis já foi reduzido, itero os imóveis
+        retornado pelo orm testando a distância entre cada um e ponto através da fórmula.
+        Os imóveis fora do circúlo, mas retornados pela consulta são eliminados,
         ficando apenas os dentro do circulo.
 
         """
-        bounds = get_min_max_coordenates(latitude, longitude)
-        return Imovel.objects.filter(latitude__gte=bounds[0],
-                                     latitude__lte=bounds[1],
-                                     longitude__gte=bounds[2],
-                                     longitude__lte=bounds[3])
+        circle = 1  # Até 1km de distância
+        bounds = get_min_max_coordenates(latitude, longitude, circle)
+        candidatos = Imovel.get_disponiveis().filter(latitude__gte=bounds[0],
+                                                     latitude__lte=bounds[1],
+                                                     longitude__gte=bounds[2],
+                                                     longitude__lte=bounds[3])
+        center = (latitude, longitude)
+        return [imovel for imovel in candidatos if haversine(center, (imovel.latitude, imovel.longitude)) <= circle]
+
+    def get_absolute_url(self):
+        return reverse('imoveis:detalhe', kwargs={'imovel_id': self.pk})
 
     def save(self, *args, **kwargs):
-        #Se um dos dois nao tiver preenchido
+        # Se um dos dois nao tiver preenchido
         if not (self.latitude and self.longitude):
             endereco_busca = '%s, %s' % (self.endereco, self.cidade)
             coordenadas = get_coordenates(endereco=endereco_busca)
@@ -80,12 +96,6 @@ class Imovel(models.Model):
     def remover_anuncio(self):
         self.disponivel = False
         self.save()
-
-
-    class Meta:
-        ordering = ('-incluido',)
-        verbose_name = 'Imóvel'
-        verbose_name_plural = 'Imóveis'
 
     def __str__(self):
         return 'Imóvel em {}'.format(self.endereco)

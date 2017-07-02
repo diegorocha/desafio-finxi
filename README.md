@@ -1,5 +1,8 @@
 # Desafio Finxi
 
+[![Build Status](https://travis-ci.org/diegorocha/desafio-finxi.svg?branch=master)](https://travis-ci.org/diegorocha/desafio-finxi)
+[![Coverage Status](https://coveralls.io/repos/github/diegorocha/desafio-finxi/badge.svg?branch=master)](https://coveralls.io/github/diegorocha/desafio-finxi?branch=master)
+
 Desafio do processo seletivo Finxi
 
 ## Desafio Python
@@ -34,7 +37,7 @@ A função get_min_max_coordenates calcula as latitudes e longitudes mínimas e 
 
 Assim, eu filtro os imoveis cujas latitude e longitude fiquem dentro desse quadrado. É claro que essa lista pode retornar imoveis que estejam a mais de 1km de distância do endereço, afinal, geramos um quadrado ao invés de um circulo.
 
-Como o conjunto de imóveis já foi reduzido, uma solução para isso seria filtrar os imóveis retornados pelo orm novamente, dessa vez sim testando a distância entre cada um e ponto através da formula, os imóveis com distância maior que o desejado seriam removidos do conjunto, restando apenas os dentro do circulo.
+Como o conjunto de imóveis já foi reduzido eu filtro novamente os imóveis retornados pelo orm, dessa vez sim testando a distância entre cada um e ponto através da fórmula, restando apenas os dentro do circulo.
 
 Para ajudar nos testes usei a biblioteca [model_mommy](https://github.com/vandersonmota/model_mommy), que auxilia na criação dos models durante os testes.
 
@@ -42,17 +45,10 @@ Para ajudar nos testes usei a biblioteca [model_mommy](https://github.com/vander
 
 ### Preparação do ambiente 
 
-Criar um ambiente virtual com o virtualenv (pode ser instalado no Ubuntu/Debian `sudo apt-get install python-virtualenv`)
+Criar um ambiente virtual com o [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)
 
 ```sh
-virtualenv -p python3 .
-```
-
-Ativação do ambiente virtual
-
-```sh
-source bin/activate
-
+mkvirtualenv desafio-finxi -p python3
 ```
 
 Instalação das dependências python
@@ -63,18 +59,20 @@ pip install -r requirements.txt
 
 Se ocorrer erros na instalação do pillow será necessário instalar as bibliotecas do sistema operacional necessárias para o seu funcionamento. Mais informações em http://pillow.readthedocs.org/en/3.1.x/installation.html#external-libraries
 
-Entrando na pasta do projeto
-```sh
-cd aluguel
-```
-
 ### Testes
 
 ```sh
 python3 manage.py tests
 ```
 
+### Testes com coverage
+
+```sh
+./tests.sh
+```
+
 ### Execução
 ```sh
 python3 manage.py runserver
 ```
+
