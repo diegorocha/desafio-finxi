@@ -49,6 +49,12 @@ class DetalheViewTest(InvalidObjectMixin, TestCase):
         self.assertEqual(200, self.resp.status_code)
         self.assertEquals(self.imovel, self.resp.context_data['imovel'])
 
+    def test_anuncio_removido(self):
+        self.imovel.remover_anuncio()
+        self.resp = self.client.get(self.url)
+        self.assertEqual(200, self.resp.status_code)
+        self.assertIn('Esse esse imóvel não está mais disponível', self.resp.content.decode('utf-8'))
+
 
 class EditarViewTest(InvalidObjectMixin, TestCase):
     def setUp(self):
