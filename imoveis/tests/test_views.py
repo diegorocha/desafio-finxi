@@ -135,7 +135,8 @@ class NovoViewTest(TestCase):
 
 class BuscaViewTest(TestCase):
     def setUp(self):
-        mommy.make(Imovel, endereco='Rua Cândido Benício, 1300', cidade='Rio de Janeiro', latitude=None, longitude=None)
+        imovel = mommy.prepare(Imovel, endereco='Rua Cândido Benício, 1300', cidade='Rio de Janeiro', latitude=None, longitude=None)
+        imovel.save()
         self.url = reverse('imoveis:busca')
 
     def test_get(self):
