@@ -37,7 +37,7 @@ A função get_min_max_coordenates calcula as latitudes e longitudes mínimas e 
 
 Assim, eu filtro os imoveis cujas latitude e longitude fiquem dentro desse quadrado. É claro que essa lista pode retornar imoveis que estejam a mais de 1km de distância do endereço, afinal, geramos um quadrado ao invés de um circulo.
 
-Como o conjunto de imóveis já foi reduzido, uma solução para isso seria filtrar os imóveis retornados pelo orm novamente, dessa vez sim testando a distância entre cada um e ponto através da formula, os imóveis com distância maior que o desejado seriam removidos do conjunto, restando apenas os dentro do circulo.
+Como o conjunto de imóveis já foi reduzido eu filtro novamente os imóveis retornados pelo orm, dessa vez sim testando a distância entre cada um e ponto através da fórmula, restando apenas os dentro do circulo.
 
 Para ajudar nos testes usei a biblioteca [model_mommy](https://github.com/vandersonmota/model_mommy), que auxilia na criação dos models durante os testes.
 

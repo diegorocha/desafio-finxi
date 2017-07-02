@@ -6,6 +6,7 @@ Django==1.11.3
 django-crispy-forms==1.6.1
 django-storages==1.4.1
 flake8==3.3.0
+haversine==0.4.5
 mccabe==0.6.1
 model-mommy==1.2.6
 Pillow==3.2.0

@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from django.core.urlresolvers import reverse
 from django.db import models
+from haversine import haversine
 from unipath import Path
 
 from imoveis.choices import UF
@@ -63,17 +64,20 @@ class Imovel(models.Model):
         É claro que essa lista pode retornar imoveis que estejam a mais de 1km de distância
         do endereço, afinal, geramos um quadrado ao invés de um circulo.
 
-        Como o conjunto de imóveis já foi reduzido, uma solução para isso seria filtrar os imóveis
-        retornado pelo orm novamente, testando a distância entre cada um e ponto através da formula.
-        Os imóveis fora do circúlo, mas retornados pela consulta seriam eliminados,
+        Como o conjunto de imóveis já foi reduzido, itero os imóveis
+        retornado pelo orm testando a distância entre cada um e ponto através da fórmula.
+        Os imóveis fora do circúlo, mas retornados pela consulta são eliminados,
         ficando apenas os dentro do circulo.
 
         """
-        bounds = get_min_max_coordenates(latitude, longitude)
-        return Imovel.get_disponiveis().filter(latitude__gte=bounds[0],
-                                               latitude__lte=bounds[1],
-                                               longitude__gte=bounds[2],
-                                               longitude__lte=bounds[3])
+        circle = 1  # Até 1km de distância
+        bounds = get_min_max_coordenates(latitude, longitude, circle)
+        candidatos = Imovel.get_disponiveis().filter(latitude__gte=bounds[0],
+                                                     latitude__lte=bounds[1],
+                                                     longitude__gte=bounds[2],
+                                                     longitude__lte=bounds[3])
+        center = (latitude, longitude)
+        return [imovel for imovel in candidatos if haversine(center, (imovel.latitude, imovel.longitude)) <= circle]
 
     def get_absolute_url(self):
         return reverse('imoveis:detalhe', kwargs={'imovel_id': self.pk})
